@@ -2,10 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: simple-api
-  labels:
-    app: simple-api
 spec:
-  replicas: 2
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: simple-api
@@ -14,8 +17,19 @@ spec:
       labels:
         app: simple-api
     spec:
+      serviceAccountName: simple-api-sa
       containers:
         - name: simple-api
-          image: pratik6958/simple-api:latest
+          image: 869935107555.dkr.ecr.us-east-1.amazonaws.com/simple-api:latest
           ports:
             - containerPort: 3000
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          env:
+            - name: NODE_ENV
+              value: "production"
