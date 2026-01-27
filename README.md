@@ -121,6 +121,11 @@ Access the application
   ```
 
   Then open: `http://localhost:3000`
+  <img width="1365" height="727" alt="image" src="https://github.com/user-attachments/assets/fdfad33b-c783-4074-a6aa-732342bf0607" />
+
+
+  Then open: `http://localhost:3000/health`
+  <img width="1365" height="720" alt="image" src="https://github.com/user-attachments/assets/f33a5b12-16e3-4828-9ffa-44b5a917202d" />
 
 ---
 
