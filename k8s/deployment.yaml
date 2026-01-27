@@ -14,8 +14,6 @@ spec:
       labels:
         app: simple-api
     spec:
-      imagePullSecrets:
-        - name: dockerhub-secret
       containers:
         - name: simple-api
           image: pratik6958/simple-api:latest
