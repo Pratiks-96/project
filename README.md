@@ -117,7 +117,7 @@ Access the application
 * Or via port-forward:
 
   ```bash
-  kubectl port-forward deployment/simple-api 3000:3000
+  kubectl port-forward deployment/simple-api 3000:3000 --address 0.0.0.0 ( If using nodeport or clusterip then you need to use port forwarding )
   ```
 
   Then open: `http://localhost:3000`
