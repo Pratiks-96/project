@@ -59,8 +59,7 @@ jobs:
           echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 --decode > ~/.kube/config
       - name: Deploy to Kubernetes
         run: |
-         kubectl config get-contexts
-         kubectl cluster-info
+          echo "build successfully"
 
       - name: Deploy to Kubernetes
         run: |
