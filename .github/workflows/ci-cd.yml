@@ -51,7 +51,11 @@ jobs:
         uses: azure/setup-kubectl@v4
         with:
           version: 'latest'
-
+      - name: Deploy to Kubernetes
+        run: |
+         kubectl config get-contexts
+         kubectl cluster-info
+       
       - name: Configure kubeconfig
         run: |
           mkdir -p ~/.kube
