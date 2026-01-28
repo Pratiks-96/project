@@ -9,59 +9,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Install dependencies
-        run: cd app && npm ci
-
-      - name: Run tests
-        run: cd app && npm test
+      - run: cd app && npm ci
+      - run: cd app && npm test
 
   build-and-push:
     needs: build-test
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
     steps:
       - uses: actions/checkout@v4
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
         with:
-          role-to-assume: arn:aws:iam::869935107555:role/github-actions-ecr
-          aws-region: us-east-1
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Login to ECR
-        uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Build, tag, and push Docker image
+      - name: Build and push image
         run: |
-          docker build -t simple-api ./app
-          docker tag simple-api:latest 869935107555.dkr.ecr.us-east-1.amazonaws.com/simple-api:latest
-          docker push 869935107555.dkr.ecr.us-east-1.amazonaws.com/simple-api:latest
+          docker build -t pratik6958/simple-api:latest .
+          docker push pratik6958/simple-api:latest
 
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
     steps:
       - uses: actions/checkout@v4
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::869935107555:role/github-actions-eks
-          aws-region: us-east-1
-
-      - name: Update kubeconfig
-        run: aws eks update-kubeconfig --region us-east-1 --name <EKS_CLUSTER_NAME>
-
-      - name: Deploy to EKS
+      - name: Configure kubeconfig
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" > kubeconfig
+          export KUBECONFIG=./kubeconfig
+      - name: Deploy to Kubernetes
         run: kubectl apply -f k8s/
