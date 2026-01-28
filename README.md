@@ -145,6 +145,8 @@ Access the application
   * Horizontal Pod Autoscaling (HPA)
 
 * (Optional) **Prometheus + Grafana** for advanced metrics and dashboards.
+* <img width="1036" height="381" alt="image" src="https://github.com/user-attachments/assets/727f81c0-caa6-4f26-9c83-4cbdac9262b0" />
+
 
 ### Alerts
 
